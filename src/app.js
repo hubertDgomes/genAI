@@ -17,7 +17,6 @@ app.use(cors({
     allowedHeaders: ["Content-Type", "Authorization"]
 }))
 
-app.options("*", cors())
 
 app.use("/api/auth", authRouter)
 app.use("/api/interview", interviewRouter)
