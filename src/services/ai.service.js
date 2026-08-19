@@ -2,7 +2,7 @@ import { GoogleGenAI } from "@google/genai";
 import 'dotenv/config'
 import * as z from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema"
-import puppeteer from "puppeteer";
+
 
 const ai = new GoogleGenAI({
     apiKey: process.env.GEMINI_API_KEY
