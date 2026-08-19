@@ -4,6 +4,8 @@ import dbConnector from "./src/config/dbConnector.js";
 
 dbConnector()
 
-app.listen(3000, (req, res) => {
-    console.log("The server is running at the 3000");
+const PORT = process.env.PORT || 3000
+
+app.listen(PORT, () => {
+    console.log(`The server is running at the ${PORT}`);
 })
