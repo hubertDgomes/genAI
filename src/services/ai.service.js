@@ -2,6 +2,7 @@ import { GoogleGenAI } from "@google/genai";
 import 'dotenv/config'
 import * as z from "zod";
 import { zodToJsonSchema } from "zod-to-json-schema"
+import puppeteer from "puppeteer";
 
 const ai = new GoogleGenAI({
     apiKey: process.env.GEMINI_API_KEY
@@ -141,15 +142,6 @@ Required exact output structure:
 }
 `;
 
-    // const interaction = await client.interactions.create({
-    //     model: "gemini-3.6-flash",
-    //     input: prompt,
-    //     response_format: {
-    //         mime_type: 'application/json',
-    //         schema: interviewReportSchema
-    //     },
-    // })
-
     const response = await ai.models.generateContent({
         model: "gemini-3.1-flash-lite",
         contents: prompt,
@@ -163,4 +155,33 @@ Required exact output structure:
     // console.log(interaction.data);
 };
 
-export default generateInterviewReport
+const generateResumePdf =async({resume, selfDescription, jobDescription}) => {
+    const resumePdfSchema = {
+        type : "string",
+        description : "The HTML content of the resume. so that it can be converted perfectly using puppeteer."
+    }
+    const prompt = `Generate resume for a candidate with the following details:
+    Resume: ${resume}
+    Self Description: ${selfDescription}
+    Job Description: ${jobDescription}
+
+    Required exact output structure:
+    {
+        "htmlContent": "string"
+    }
+    
+    `
+
+    const response = await ai.models.generateContent({
+        model: "gemini-3.1-flash-lite",
+        contents: prompt,
+        config: {
+            responseMimeType: "application/json",
+            responseSchema: resumePdfSchema
+        }
+    });
+
+    return (JSON.parse(response.text))
+}
+
+export default {generateInterviewReport, generateResumePdf}

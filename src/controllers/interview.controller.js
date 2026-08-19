@@ -1,5 +1,5 @@
 import { PDFParse } from "pdf-parse";
-import generateInterviewReport from "../services/ai.service.js";
+import aiService from "../services/ai.service.js";
 import interviewReportModel from "../models/interviewReport.model.js";
 
 const generateInterViewReportController = async (req, res) => {
@@ -9,7 +9,7 @@ const generateInterViewReportController = async (req, res) => {
 
     const { selfDescription, jobDescription } = req.body;
 
-    const interviewReportWithAI = await generateInterviewReport({
+    const interviewReportWithAI = await aiService.generateInterviewReport({
         resume: resumeContent,
         selfDescription,
         jobDescription
@@ -58,7 +58,9 @@ const getInterviewReportByIdController = async (req, res) => {
 }
 
 const getAllInterviewReportsController = async (req, res) => {
-    const interviewReports = await interviewReportModel.find({user : req.user.id}).select("-_id -jobDescription -resume -selfDescription -matchScore -technicalQuestion -behavioralQuestion -skillGap -preparationPlan -createdAt -updatedAt").sort({createdAt : -1})
+    const interviewReports = await interviewReportModel.find({user : req.user.id}).select("-jobDescription -resume -selfDescription -matchScore -technicalQuestion -behavioralQuestion -skillGap -preparationPlan -createdAt -updatedAt").sort({createdAt : -1})
+
+    console.log(req.user.id)
     try{
         if(interviewReports.length === 0){
             return res.status(404).json({
@@ -71,6 +73,7 @@ const getAllInterviewReportsController = async (req, res) => {
         })
     }
     res.status(200).json({
+        message: "Interview Report fetched successfully",
         interviewReports
     })
 }
