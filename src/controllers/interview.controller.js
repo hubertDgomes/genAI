@@ -29,4 +29,51 @@ const generateInterViewReportController = async (req, res) => {
     })
 }
 
-export default generateInterViewReportController;
+const getInterviewReportByIdController = async (req, res) => {
+    const {id}  = req.params
+
+    try{
+        if(!id.match(/^[0-9a-fA-F]{24}$/)){
+            return res.status(400).json({
+                message : "Invalid Interview Report ID"
+            })
+        }
+    }catch(err){
+        return res.status(500).json({
+            message : "Internal Server Error"
+        })
+    }
+    const interviewReport = await interviewReportModel.findOne({_id : id, user : req.user.id})
+
+    if(!interviewReport){
+        return res.status(404).json({
+            message : "Interview Report not found"
+        })
+    }
+
+    res.status(200).json({
+        message: "Interview Report fetched successfully",
+        interviewReport
+    })
+}
+
+const getAllInterviewReportsController = async (req, res) => {
+    const interviewReports = await interviewReportModel.find({user : req.user.id})
+    try{
+        if(interviewReports.length === 0){
+            return res.status(404).json({
+                message : "No Interview Reports found"
+            })
+        }
+    }catch(err){
+        return res.status(500).json({
+            message : "Internal Server Error"
+        })
+    }
+    res.status(200).json({
+        message: "Interview Reports fetched successfully",
+        interviewReports
+    })
+}
+
+export default {generateInterViewReportController, getInterviewReportByIdController, getAllInterviewReportsController};
