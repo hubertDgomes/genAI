@@ -11,12 +11,12 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser())
 app.use(cors({
-    origin : "http://localhost:5173",
-    credentials : true
+    origin: ["http://localhost:5173", "https://gen-ai-client-gilt.vercel.app"],
+    credentials: true
 }))
 
-app.use("/api/auth" , authRouter)
-app.use("/api/interview" , interviewRouter)
+app.use("/api/auth", authRouter)
+app.use("/api/interview", interviewRouter)
 
 app.get("/", (req, res) => {
     res.status(200).json({ status: "ok", message: "Backend API is running" });
