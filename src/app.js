@@ -18,4 +18,9 @@ app.use(cors({
 app.use("/api/auth" , authRouter)
 app.use("/api/interview" , interviewRouter)
 
+app.get("/", (req, res) => {
+    res.status(200).json({ status: "ok", message: "Backend API is running" });
+});
+
+
 export default app;
