@@ -12,8 +12,12 @@ app.use(express.json());
 app.use(cookieParser())
 app.use(cors({
     origin: ["http://localhost:5173", "https://gen-ai-client-gilt.vercel.app"],
-    credentials: true
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"]
 }))
+
+app.options("*", cors())
 
 app.use("/api/auth", authRouter)
 app.use("/api/interview", interviewRouter)
