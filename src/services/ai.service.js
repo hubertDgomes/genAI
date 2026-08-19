@@ -96,14 +96,20 @@ const interviewReportSchema = {
                 },
                 required: ["day", "focus", "tasks"]
             }
-        }
+        },
+        title: {
+            type: "string",
+            description: "A title for the interview report."
+        },
     },
+
     required: [
         "matchScore",
         "technicalQuestion",
         "behavioralQuestion",
         "skillGap",
-        "preparationPlan"
+        "preparationPlan",
+        "title"
     ]
 };
 
@@ -130,7 +136,8 @@ Required exact output structure:
   "technicalQuestion": [{ "question": "string", "intention": "string", "answer": "string" }],
   "behavioralQuestion": [{ "question": "string", "intention": "string", "answer": "string" }],
   "skillGap": [{ "skill": "string", "severity": "low|medium|high" }],
-  "preparationPlan": [{ "day": 1, "focus": "string", "tasks": ["string"] }]
+  "preparationPlan": [{ "day": 1, "focus": "string", "tasks": ["string"] }],
+  "title": "string"
 }
 `;
 

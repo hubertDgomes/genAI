@@ -43,7 +43,7 @@ const getInterviewReportByIdController = async (req, res) => {
             message : "Internal Server Error"
         })
     }
-    const interviewReport = await interviewReportModel.findOne({_id : id, user : req.user.id})
+    const interviewReport = await interviewReportModel.findOne({_id : id, user : req.user.id}).sort({createdAt : -1})
 
     if(!interviewReport){
         return res.status(404).json({
@@ -58,7 +58,7 @@ const getInterviewReportByIdController = async (req, res) => {
 }
 
 const getAllInterviewReportsController = async (req, res) => {
-    const interviewReports = await interviewReportModel.find({user : req.user.id})
+    const interviewReports = await interviewReportModel.find({user : req.user.id}).select("-_id -jobDescription -resume -selfDescription -matchScore -technicalQuestion -behavioralQuestion -skillGap -preparationPlan -createdAt -updatedAt").sort({createdAt : -1})
     try{
         if(interviewReports.length === 0){
             return res.status(404).json({
@@ -71,7 +71,6 @@ const getAllInterviewReportsController = async (req, res) => {
         })
     }
     res.status(200).json({
-        message: "Interview Reports fetched successfully",
         interviewReports
     })
 }
